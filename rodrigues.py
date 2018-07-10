@@ -10,7 +10,6 @@ def rodrigues_batch(rvecs):
     See
     https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula#Matrix_notation
     https://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle
-    --- second article is wrong?
     """
     batch_size = tf.shape(rvecs)[0]
 
@@ -30,7 +29,6 @@ def rodrigues_batch(rvecs):
          tf.sin(thetas)[..., tf.newaxis] * Ks + \
          (1 - tf.cos(thetas)[..., tf.newaxis]) * tf.matmul(Ks, Ks)
 
-    print(Rs.shape)
     return Rs
 
 # For testing only
