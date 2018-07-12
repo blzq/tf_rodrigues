@@ -12,6 +12,7 @@ def rodrigues_batch(rvecs):
     https://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle
     """
     batch_size = tf.shape(rvecs)[0]
+    tf.assert_equal(tf.shape(rvecs)[1], 3)
 
     thetas = tf.norm(rvecs, axis=1, keepdims=True)
     u = rvecs / thetas
@@ -35,16 +36,16 @@ def rodrigues_batch(rvecs):
 if __name__ == '__main__':
     import numpy as np
     import cv2
-    rvecs = np.random.randn(4, 3).astype(np.float32)
+    rvecs = np.random.randn(4, 12).astype(np.float32)
     
     rvecs_tf = tf.constant(rvecs)
-    Rs = rodrigues_batch(rvecs_tf)
+    Rs = rodrigues_batch(tf.reshape(rvecs_tf, [-1, 3]))
     with tf.Session() as sess:
         print("TensorFlow: ")
         print(sess.run(Rs))
 
     print("\nOpenCV: ")
-    for rvec in rvecs:
+    for rvec in np.reshape(rvecs, [-1, 3]):
         mat, _ = cv2.Rodrigues(rvec)
         print(mat.T)
         print()
