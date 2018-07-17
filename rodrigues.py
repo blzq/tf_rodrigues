@@ -36,6 +36,7 @@ def rodrigues_batch(rvecs):
     return tf.where(is_zero,
                     tf.eye(3, batch_shape=[batch_size]), Rs)
 
+
 # For testing only
 if __name__ == '__main__':
     import numpy as np
