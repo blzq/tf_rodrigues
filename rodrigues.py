@@ -15,6 +15,7 @@ def rodrigues_batch(rvecs):
     tf.assert_equal(tf.shape(rvecs)[1], 3)
 
     thetas = tf.norm(rvecs, axis=1, keepdims=True)
+    is_zero = tf.equal(tf.squeeze(thetas), 0.0)
     u = rvecs / thetas
 
     # Each K is the cross product matrix of unit axis vectors
@@ -30,7 +31,9 @@ def rodrigues_batch(rvecs):
          tf.sin(thetas)[..., tf.newaxis] * Ks + \
          (1 - tf.cos(thetas)[..., tf.newaxis]) * tf.matmul(Ks, Ks)
 
-    return Rs
+    # Avoid returning NaNs where division by zero happened
+    return tf.where(is_zero,
+                    tf.eye(3, batch_shape=[batch_size]), Rs)
 
 # For testing only
 if __name__ == '__main__':
