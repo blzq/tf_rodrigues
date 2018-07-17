@@ -26,7 +26,7 @@ def rodrigues_batch(rvecs):
     Ks_2 = tf.stack([  u[:, 2],  zero   , -u[:, 0] ], axis=1)  # row 2
     Ks_3 = tf.stack([ -u[:, 1],  u[:, 0],  zero    ], axis=1)  # row 3
     # pyformat: enable
-    Ks = tf.stack([Ks_1, Ks_2, Ks_3], axis=2)                  # stack rows
+    Ks = tf.stack([Ks_1, Ks_2, Ks_3], axis=1)                  # stack rows
 
     Rs = tf.eye(3, batch_shape=[batch_size]) + \
          tf.sin(thetas)[..., tf.newaxis] * Ks + \
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     print("\nOpenCV: ")
     for rvec in np.reshape(rvecs, [-1, 3]):
         mat, _ = cv2.Rodrigues(rvec)
-        print(mat.T)
+        print(mat)
         print()
