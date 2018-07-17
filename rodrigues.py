@@ -3,8 +3,9 @@
 
 import tensorflow as tf
 
+
 def rodrigues_batch(rvecs):
-    """ 
+    """
     Convert a batch of axis-angle rotations in rotation vector form shaped
     (batch, 3) to a batch of rotation matrices shaped (batch, 3, 3).
     See
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     import numpy as np
     import cv2
     rvecs = np.random.randn(4, 12).astype(np.float32)
-    
+
     rvecs_tf = tf.constant(rvecs)
     Rs = rodrigues_batch(tf.reshape(rvecs_tf, [-1, 3]))
     with tf.Session() as sess:
@@ -52,7 +53,3 @@ if __name__ == '__main__':
         mat, _ = cv2.Rodrigues(rvec)
         print(mat.T)
         print()
-
-
-
-
